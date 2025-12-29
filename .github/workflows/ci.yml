@@ -25,4 +25,4 @@ jobs:
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test --no-fail-fast
+        run: flutter test
