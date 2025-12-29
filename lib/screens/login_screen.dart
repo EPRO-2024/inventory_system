@@ -67,10 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
     } on FirebaseAuthException catch (e) {
       String message = 'เกิดข้อผิดพลาด';
-      if (e.code == 'user-not-found') message = 'ไม่พบอีเมลนี้ในระบบ';
-      else if (e.code == 'wrong-password') message = 'รหัสผ่านไม่ถูกต้อง';
-      else if (e.code == 'email-already-in-use') message = 'อีเมลนี้ถูกใช้งานแล้ว';
-      else if (e.code == 'weak-password') message = 'รหัสผ่านต้องมีความยาว 6 ตัวอักษรขึ้นไป';
+      if (e.code == 'user-not-found') {
+        message = 'ไม่พบอีเมลนี้ในระบบ';
+      } else if (e.code == 'wrong-password') {
+        message = 'รหัสผ่านไม่ถูกต้อง';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'อีเมลนี้ถูกใช้งานแล้ว';
+      } else if (e.code == 'weak-password') {
+        message = 'รหัสผ่านต้องมีความยาว 6 ตัวอักษรขึ้นไป';
+      }
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -84,7 +89,11 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

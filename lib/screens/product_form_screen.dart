@@ -26,7 +26,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
 
   // --- ส่วนจัดการรูปภาพ ---
   final ImagePicker _picker = ImagePicker();
-  List<XFile> _newImages = []; 
+  final List<XFile> _newImages = []; 
   List<String> _existingImageUrls = []; 
   
   // --- ตัวแปรสำหรับการคำนวณน้ำหนักรวมแบบ Real-time ---
@@ -109,7 +109,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         });
       }
     } catch (e) {
-      print('Error fetching existing data: $e');
+      debugPrint('Error fetching existing data: $e');
     }
   }
 
@@ -139,7 +139,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         });
       }
     } catch (e) {
-      print('Error picking images: $e');
+      debugPrint('Error picking images: $e');
     }
   }
 
@@ -166,7 +166,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
            uploadedUrls.add(url);
         }
       } catch (e) {
-        print('Error uploading image ${xFile.name}: $e');
+        debugPrint('Error uploading image ${xFile.name}: $e');
       }
     }
     return uploadedUrls;
@@ -257,7 +257,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         );
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

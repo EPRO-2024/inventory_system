@@ -45,7 +45,7 @@ class _InventoryHistoryScreenState extends State<InventoryHistoryScreen> {
         }
       }
     } catch (e) {
-      print("Error cleaning up old data: $e");
+      debugPrint("Error cleaning up old data: $e");
     }
   }
 

@@ -64,35 +64,36 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   // ฟังก์ชันลบสินค้า (สำหรับโหมด ReadOnly)
   Future<void> _deleteProduct() async {
+    final parentContext = context;
     return showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: parentContext,
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('ยืนยันการลบ'),
           content: Text('คุณต้องการลบรายการ "${widget.productData['name']}" ออกจากระบบถาวรใช่หรือไม่?'),
           actions: <Widget>[
             TextButton(
               child: const Text('ยกเลิก'),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
             ),
             TextButton(
               child: const Text('ลบข้อมูล', style: TextStyle(color: Colors.red)),
               onPressed: () async {
-                Navigator.of(context).pop(); // ปิด Dialog
+                final navigator = Navigator.of(parentContext);
+                final messenger = ScaffoldMessenger.of(parentContext);
+                Navigator.of(dialogContext).pop(); // ปิด Dialog
                 try {
                   await FirebaseFirestore.instance.collection('products').doc(widget.docId).delete();
-                  if (mounted) {
-                    Navigator.of(context).pop(); // ปิดหน้า Detail กลับไปหน้าก่อนหน้า
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('ลบรายการเรียบร้อยแล้ว'), backgroundColor: Colors.green),
-                    );
-                  }
+                  if (!mounted) return;
+                  navigator.pop(); // ปิดหน้า Detail กลับไปหน้าก่อนหน้า
+                  messenger.showSnackBar(
+                    const SnackBar(content: Text('ลบรายการเรียบร้อยแล้ว'), backgroundColor: Colors.green),
+                  );
                 } catch (e) {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('เกิดข้อผิดพลาด: $e'), backgroundColor: Colors.red),
-                    );
-                  }
+                  if (!mounted) return;
+                  messenger.showSnackBar(
+                    SnackBar(content: Text('เกิดข้อผิดพลาด: $e'), backgroundColor: Colors.red),
+                  );
                 }
               },
             ),

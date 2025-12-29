@@ -41,7 +41,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
         setState(() => _imageFile = pickedFile);
       }
     } catch (e) {
-      print('Error picking image: $e');
+      debugPrint('Error picking image: $e');
     }
   }
 
@@ -102,7 +102,11 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
         );
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
